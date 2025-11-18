@@ -15,8 +15,9 @@ import time
 # Создаем приложение
 app = FastAPI(title="Image Blender")
 
-# Исправляем путь к шаблонам - используем текущую директорию
+# Исправляем путь к шаблонам и статическим файлам
 templates = Jinja2Templates(directory=".")
+app.mount("/static", StaticFiles(directory="."), name="static")
 
 # Хранилище для CAPTCHA
 captcha_store = {}
