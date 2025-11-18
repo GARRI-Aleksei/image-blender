@@ -17,7 +17,6 @@ app = FastAPI(title="Image Blender")
 
 # Исправляем путь к шаблонам и статическим файлам
 templates = Jinja2Templates(directory=".")
-app.mount("/static", StaticFiles(directory="."), name="static")
 
 # Хранилище для CAPTCHA
 captcha_store = {}
@@ -209,3 +208,4 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port, reload=False)
+
