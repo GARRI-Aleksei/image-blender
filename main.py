@@ -15,13 +15,8 @@ import time
 # Создаем приложение
 app = FastAPI(title="Image Blender")
 
-# Создаем директории если их нет
-os.makedirs("static", exist_ok=True)
-os.makedirs("templates", exist_ok=True)
-
-# Настраиваем статические файлы и шаблоны
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+# Исправляем путь к шаблонам - используем текущую директорию
+templates = Jinja2Templates(directory=".")
 
 # Хранилище для CAPTCHA
 captcha_store = {}
@@ -207,7 +202,7 @@ async def health_check():
     """Эндпоинт для проверки здоровья приложения"""
     return {"status": "healthy", "message": "Image Blender is running"}
 
-# Для локального запуска
+# Для совместимости с Render.com
 if __name__ == "__main__":
     import uvicorn
     import os
