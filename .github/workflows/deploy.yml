@@ -1,4 +1,4 @@
-name: Test Application
+name: Deploy to Render
 
 on:
   push:
@@ -23,9 +23,18 @@ jobs:
       run: |
         pip install -r requirements.txt
         
-    - name: Test application start
+    - name: Test application startup
       run: |
-        timeout 30s python main.py &
+        # Запускаем сервер в фоне
+        python main.py &
+        SERVER_PID=$!
+        
+        # Ждем запуска
         sleep 10
+        
+        # Проверяем health endpoint
         curl -f http://localhost:8000/health || exit 1
-        echo "✅ Application started successfully"
+        echo "✅ Application started successfully!"
+        
+        # Останавливаем сервер
+        kill $SERVER_PID
