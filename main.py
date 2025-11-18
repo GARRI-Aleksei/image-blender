@@ -20,6 +20,16 @@ templates = Jinja2Templates(directory=".")
 # Хранилище для CAPTCHA
 captcha_store = {}
 
+@app.get("/style.css")
+async def get_css():
+    """Отдаем CSS файл напрямую"""
+    try:
+        with open("style.css", "r", encoding="utf-8") as f:
+            css_content = f.read()
+        return HTMLResponse(content=css_content, media_type="text/css")
+    except FileNotFoundError:
+        return HTMLResponse(content="/* CSS file not found */", media_type="text/css")
+
 def generate_captcha():
     """Генерация CAPTCHA"""
     text = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(4))
