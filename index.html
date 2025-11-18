@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Blender - Смешивание изображений</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Image Blender</h1>
+            <p>Смешивайте изображения и анализируйте цвета</p>
+        </header>
+
+        <main>
+            <form action="/blend" method="post" enctype="multipart/form-data" class="blend-form">
+                <fieldset>
+                    <legend>Загрузка изображений</legend>
+                    
+                    <div class="form-group">
+                        <label for="image1">Первое изображение:</label>
+                        <input type="file" id="image1" name="image1" accept="image/*" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image2">Второе изображение:</label>
+                        <input type="file" id="image2" name="image2" accept="image/*" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="blend_level">Уровень смешивания (0-1):</label>
+                        <input type="range" id="blend_level" name="blend_level" min="0" max="1" step="0.1" value="0.5" 
+                               oninput="document.getElementById('blend_value').textContent = this.value">
+                        <span id="blend_value">0.5</span>
+                        <small>0 = только второе изображение, 1 = только первое изображение</small>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Проверка безопасности</legend>
+                    <div class="form-group">
+                        <label>Введите текст с картинки:</label>
+                        <div class="captcha-container">
+                            <img src="{{ captcha_image }}" alt="CAPTCHA" class="captcha-image">
+                            <input type="text" name="captcha_solution" required maxlength="6" placeholder="Введите CAPTCHA">
+                            <input type="hidden" name="captcha_id" value="{{ captcha_id }}">
+                        </div>
+                    </div>
+                </fieldset>
+
+                {% if error %}
+                <div class="error-message">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <button type="submit" class="submit-btn">Смешать изображения</button>
+            </form>
+        </main>
+
+        <footer>
+            <p>Image Blender &copy; 2024</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('blend_level').addEventListener('input', function() {
+            document.getElementById('blend_value').textContent = this.value;
+        });
+    </script>
+</body>
+</html>

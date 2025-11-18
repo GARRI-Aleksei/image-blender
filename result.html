@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат смешивания - Image Blender</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Результат смешивания</h1>
+            <p>Уровень смешивания: {{ blend_level }}</p>
+            <a href="/" class="back-link">← Назад к форме</a>
+        </header>
+
+        <main>
+            <fieldset>
+                <legend>Исходные изображения</legend>
+                <div class="images-grid">
+                    <div class="image-item">
+                        <h3>Изображение 1</h3>
+                        <img src="data:image/png;base64,{{ image1 }}" alt="Image 1">
+                        <img src="data:image/png;base64,{{ hist1 }}" alt="Histogram 1" class="histogram">
+                    </div>
+                    <div class="image-item">
+                        <h3>Изображение 2</h3>
+                        <img src="data:image/png;base64,{{ image2 }}" alt="Image 2">
+                        <img src="data:image/png;base64,{{ hist2 }}" alt="Histogram 2" class="histogram">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Результат смешивания</legend>
+                <div class="result-container">
+                    <div class="result-image">
+                        <h3>Смешанное изображение</h3>
+                        <img src="data:image/png;base64,{{ blended_image }}" alt="Blended Image">
+                        <img src="data:image/png;base64,{{ hist_blended }}" alt="Blended Histogram" class="histogram">
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="action-buttons">
+                <a href="/" class="btn">Смешать другие изображения</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>Image Blender &copy; 2024</p>
+        </footer>
+    </div>
+</body>
+</html>
