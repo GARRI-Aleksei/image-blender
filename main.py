@@ -1,6 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form, Request
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import os
 from PIL import Image, ImageDraw, ImageFont
@@ -15,7 +14,7 @@ import time
 # Создаем приложение
 app = FastAPI(title="Image Blender")
 
-# Исправляем путь к шаблонам и статическим файлам
+# Исправляем путь к шаблонам
 templates = Jinja2Templates(directory=".")
 
 # Хранилище для CAPTCHA
@@ -208,4 +207,3 @@ if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port, reload=False)
-
