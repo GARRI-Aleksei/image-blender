@@ -75,8 +75,8 @@ def verify_captcha(captcha_id: str, user_input: str) -> bool:
         return user_input.upper() == correct_text.upper()
     return False
 
-def blend_images(img1, img2, blend_level):
-    """Смешивание двух изображений"""
+def blend_images(img1, img2, red_level, green_level, blue_level):
+    """Смешивание двух изображений с отдельными каналами RGB"""
     # Приводим к RGB и одинаковому размеру
     img1 = img1.convert('RGB')
     img2 = img2.convert('RGB')
@@ -88,10 +88,26 @@ def blend_images(img1, img2, blend_level):
     img1 = img1.resize(target_size, Image.LANCZOS)
     img2 = img2.resize(target_size, Image.LANCZOS)
     
-    # Конвертируем в numpy и смешиваем
+    # Конвертируем в numpy массивы
     arr1 = np.array(img1, dtype=np.float32)
     arr2 = np.array(img2, dtype=np.float32)
-    blended = arr1 * blend_level + arr2 * (1 - blend_level)
+    
+    # Создаем маску для каждого канала
+    red_mask = np.array([red_level, 0, 0])
+    green_mask = np.array([0, green_level, 0])
+    blue_mask = np.array([0, 0, blue_level])
+    
+    # Применяем смешивание для каждого канала отдельно
+    blended = np.zeros_like(arr1, dtype=np.float32)
+    
+    # Красный канал
+    blended[:,:,0] = arr1[:,:,0] * red_level + arr2[:,:,0] * (1 - red_level)
+    # Зеленый канал
+    blended[:,:,1] = arr1[:,:,1] * green_level + arr2[:,:,1] * (1 - green_level)
+    # Синий канал
+    blended[:,:,2] = arr1[:,:,2] * blue_level + arr2[:,:,2] * (1 - blue_level)
+    
+    # Ограничиваем значения и конвертируем обратно
     blended = np.clip(blended, 0, 255).astype(np.uint8)
     
     return Image.fromarray(blended)
@@ -142,7 +158,9 @@ async def blend_images_endpoint(
     request: Request,
     image1: UploadFile = File(...),
     image2: UploadFile = File(...),
-    blend_level: float = Form(...),
+    red_level: float = Form(...),
+    green_level: float = Form(...),
+    blue_level: float = Form(...),
     captcha_solution: str = Form(...),
     captcha_id: str = Form(...)
 ):
@@ -165,8 +183,8 @@ async def blend_images_endpoint(
         img1 = Image.open(io.BytesIO(img1_data))
         img2 = Image.open(io.BytesIO(img2_data))
         
-        # Смешиваем изображения
-        blended_img = blend_images(img1, img2, blend_level)
+        # Смешиваем изображения с отдельными каналами
+        blended_img = blend_images(img1, img2, red_level, green_level, blue_level)
         
         # Создаем гистограммы
         hist1 = create_histogram(img1, "Изображение 1")
@@ -181,7 +199,9 @@ async def blend_images_endpoint(
         
         result_data = {
             "request": request,
-            "blend_level": blend_level,
+            "red_level": red_level,
+            "green_level": green_level,
+            "blue_level": blue_level,
             "image1": img_to_base64(img1),
             "image2": img_to_base64(img2),
             "blended_image": img_to_base64(blended_img),
