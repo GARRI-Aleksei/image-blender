@@ -10,7 +10,11 @@
     <div class="container">
         <header>
             <h1>Результат смешивания</h1>
-            <p>Уровень смешивания: {{ blend_level }}</p>
+            <p>Уровни смешивания: 
+                <span style="color: #ff4444;">Красный: {{ red_level }}</span>, 
+                <span style="color: #44ff44;">Зеленый: {{ green_level }}</span>, 
+                <span style="color: #4444ff;">Синий: {{ blue_level }}</span>
+            </p>
             <a href="/" class="back-link">← Назад к форме</a>
         </header>
 
@@ -52,8 +56,4 @@
         </footer>
     </div>
 </body>
-
 </html>
-
-
-
