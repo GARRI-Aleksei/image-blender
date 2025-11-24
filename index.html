@@ -10,7 +10,7 @@
     <div class="container">
         <header>
             <h1>Image Blender</h1>
-            <p>Смешивайте изображения и анализируйте цвета</p>
+            <p>Смешивайте изображения и анализируйте цвета по каналам RGB</p>
         </header>
 
         <main>
@@ -27,13 +27,31 @@
                         <label for="image2">Второе изображение:</label>
                         <input type="file" id="image2" name="image2" accept="image/*" required>
                     </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Настройка цветовых каналов</legend>
                     
                     <div class="form-group">
-                        <label for="blend_level">Уровень смешивания (0-1):</label>
-                        <input type="range" id="blend_level" name="blend_level" min="0" max="1" step="0.1" value="0.5" 
-                               oninput="document.getElementById('blend_value').textContent = this.value">
-                        <span id="blend_value">0.5</span>
+                        <label for="red_level" style="color: #ff4444;">Красный канал (0-1):</label>
+                        <input type="range" id="red_level" name="red_level" min="0" max="1" step="0.1" value="0.5" 
+                               oninput="document.getElementById('red_value').textContent = this.value">
+                        <span id="red_value" style="color: #ff4444;">0.5</span>
                         <small>0 = только второе изображение, 1 = только первое изображение</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="green_level" style="color: #44ff44;">Зеленый канал (0-1):</label>
+                        <input type="range" id="green_level" name="green_level" min="0" max="1" step="0.1" value="0.5" 
+                               oninput="document.getElementById('green_value').textContent = this.value">
+                        <span id="green_value" style="color: #44ff44;">0.5</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="blue_level" style="color: #4444ff;">Синий канал (0-1):</label>
+                        <input type="range" id="blue_level" name="blue_level" min="0" max="1" step="0.1" value="0.5" 
+                               oninput="document.getElementById('blue_value').textContent = this.value">
+                        <span id="blue_value" style="color: #4444ff;">0.5</span>
                     </div>
                 </fieldset>
 
@@ -65,13 +83,15 @@
     </div>
 
     <script>
-        document.getElementById('blend_level').addEventListener('input', function() {
-            document.getElementById('blend_value').textContent = this.value;
+        document.getElementById('red_level').addEventListener('input', function() {
+            document.getElementById('red_value').textContent = this.value;
+        });
+        document.getElementById('green_level').addEventListener('input', function() {
+            document.getElementById('green_value').textContent = this.value;
+        });
+        document.getElementById('blue_level').addEventListener('input', function() {
+            document.getElementById('blue_value').textContent = this.value;
         });
     </script>
 </body>
-
 </html>
-
-
-
